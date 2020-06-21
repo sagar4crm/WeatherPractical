@@ -1,8 +1,9 @@
 import { LightningElement, track, wire } from 'lwc';
+import weather from '@salesforce/resourceUrl/weather';
+import resourceContainer from '@salesforce/resourceUrl/Resources';
 import { loadStyle, loadScript } from 'lightning/platformResourceLoader';
 import performCallout from '@salesforce/apex/WeatherAPI.performCallout';
-import weather from '@salesforce/resourceUrl/weather';
-
+ 
 export default class Weather extends LightningElement {
     @track lat;
     @track long;
@@ -11,7 +12,25 @@ export default class Weather extends LightningElement {
     zoomLevel = 10;
     @track result;
     @track value;
- 
+    
+    /* generate the URL for the JavaScript, CSS and image file */
+    jqueryJS = resourceContainer + '/js/jquery-2.1.4.min.js';
+    skyJS = resourceContainer + '/js/skycons.js';
+    styleCss = resourceContainer + '/css/style.css';
+    
+    renderedCallback() {
+        /*eslint-disable */
+        Promise.all([
+            loadScript(this,this.jqueryJS),
+            loadScript(this,this.skyJS),
+            loadStyle(this, this.styleCss)
+        ]).then(() =>
+        {
+            console.log('loaded');
+        })
+        
+    }
+        
     connectedCallback() {
         performCallout({location: 'Dubai'}).then(data => {
             this.mapMarkers = [{
@@ -30,7 +49,27 @@ export default class Weather extends LightningElement {
  
     get getCityName() {
         if (this.result) {
-            return this.result.cityName + ' Information';
+            return this.result.cityName;
+        } else {
+            return '---'
+        }
+    }
+
+    get getCityDateTime() {
+        if (this.result) {
+        var m_names = ["January", "February", "March", 
+        "April", "May", "June", "July", "August", "September", 
+        "October", "November", "December"];
+
+        var d_names = ["Sunday","Monday", "Tuesday", "Wednesday", 
+        "Thursday", "Friday", "Saturday"];
+
+        var myDate = new Date();
+        var curr_date = myDate.getDate();
+        var curr_month = myDate.getMonth();
+        var curr_day  = myDate.getDay();
+        var datetoday = d_names[curr_day] + ", " + m_names[curr_month] + " " +curr_date;
+            return datetoday;
         } else {
             return '---'
         }

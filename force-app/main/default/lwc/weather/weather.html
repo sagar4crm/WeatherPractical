@@ -1,5 +1,5 @@
-<template>
-    <lightning-card title={getCityName}>
+<template> 
+    <!-- <lightning-card title={getCityName}>
         <lightning-layout>
             <lightning-layout-item size="6" medium-device-size="4" padding="around-small">
                 <lightning-combobox name="cities"
@@ -17,7 +17,7 @@
                         <div class="slds-align_absolute-center color-blue">
                             <template if:true={result}>
                                 {getConvertedTemp}
-                            </template>
+                            </template> 
                         </div>
                     </lightning-card>
                 </lightning-layout-item>
@@ -29,7 +29,7 @@
                             </template>
                         </div>
                     </lightning-card>
-                </lightning-layout-item>
+                </lightning-layout-item> 
                 <lightning-layout-item size="3" medium-device-size="4" padding="around-small">
                     <lightning-card icon-name="standard:calibration" title="Precipitation">
                         <div class="slds-align_absolute-center color-green">
@@ -44,5 +44,59 @@
             map-markers={mapMarkers}
             zoom-level={zoomLevel}>
         </lightning-map>
-    </lightning-card>
+    </lightning-card> -->
+	<!-- w3ls-weather -->
+	<div class="w3ls-weather">
+		<h1>Weather Report</h1>
+	<lightning-combobox name="cities"
+			value={value}
+			placeholder="--Select--"
+			options={options}
+			onchange={handleChange} > 
+		</lightning-combobox>
+		<div class="w3ls-weather-agileinfo"> 
+			
+			<div class="weather-left">
+				<div class="weather-left-text">
+					<h4>{getCityName}</h4>
+					<h5>{getCityDateTime}</h5>
+				</div>
+				<ul class="report">
+					<li><a href="#">{getConvertedTemp} °C</a></li>
+				</ul>
+			</div>
+			<div class="weather-right">
+				<ul>
+					<li>
+						<figure class="icons">
+							<canvas id="clear-day" width="40" height="40"></canvas>
+						</figure>
+						<div class="weather-text">
+							<h4><lightning-icon icon-name="utility:flow" title="Speed"></lightning-icon></h4>
+        					<h5>{getCurrentWindSpeed}</h5>
+						</div>
+						<div class="clear"></div>
+					</li>
+					<li>
+						<figure class="icons">
+							<canvas id="snow" width="40" height="40"></canvas>
+						</figure>
+						<div class="weather-text">
+							<h4><lightning-icon icon-name="standard:calibration" title="Precipitation"></lightning-icon></h4>
+        					<h5>{getCurrentPrecip}</h5>
+						</div>
+						<div class="clear"></div>
+					</li>
+				</ul>
+			</div>
+			<div class="clear"></div>
+			<lightning-map
+				map-markers={mapMarkers}
+				zoom-level={zoomLevel}>
+				</lightning-map>
+		</div>  
+	<div class="copyw3-agile">
+		<p></p>
+	</div>
+	</div>
 </template>
